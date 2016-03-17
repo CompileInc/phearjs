@@ -19,7 +19,8 @@
         "user_agent": "PhearBot/0.4.1 - http://phear.io",
         "max_connections": 10,
         "get_requests": false,
-        "get_cookies": false
+        "get_cookies": false,
+        "worker_script": "../scripts/worker_script.js"
       }
     },
     "production": {
@@ -47,7 +48,8 @@
         "max_connections": 10,
         "allowed_clients": ["127.0.0.1"],
         "get_requests": false,
-        "get_cookies": false
+        "get_cookies": false,
+        "worker_script": "../scripts/worker_script.js"
       }
     }
   }

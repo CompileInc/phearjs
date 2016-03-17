@@ -162,6 +162,18 @@ fetch_url = (url, response, this_inst, parse_delay, request_headers, get_request
 
       response.setHeader "content-type", "application/json"
 
+      # Set the path of the script you want to inject as worker_script inside config.json
+      if config.worker_script?
+        # We inject script to phantom outer space
+        script_is_injected = phantom.injectJs(config.worker_script)
+
+        if script_is_injected
+          # The worker script should contain a function called phearMain, which is the entry point
+          # it is passed the page object
+          logger.info this_inst, "Injected worker script: #{config.worker_script}"
+          worker_script_result = phearMain page_inst
+
+
       # The page was requested, now we give PhantomJS parse_delay milliseconds to evaluate the page
       page_inst.parse_wait = setTimeout (->
 
@@ -187,6 +199,7 @@ fetch_url = (url, response, this_inst, parse_delay, request_headers, get_request
           requests: requests if get_requests in ["true", "1"]
           cookies: cookie_inst.cookies if get_cookies in ["true", "1"]
           had_js_errors: had_js_errors
+          worker_script_result: worker_script_result if worker_script_result?
           content: strip_scripts(page_inst.content)
         )
         close_response this_inst, status, response
